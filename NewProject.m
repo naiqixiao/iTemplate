@@ -62,11 +62,11 @@ elseif ispc
     
 end
 
-[DataFolder, name, ext] = fileparts(mfilename('fullpath'));
+[ScriptFolder, name, ext] = fileparts(mfilename('fullpath'));
 
-addpath(genpath(DataFolder));
+addpath(genpath(ScriptFolder));
 
-handles.DataFolder = DataFolder;
+handles.ScriptFolder = ScriptFolder;
 
 handles.Ready = false;
 

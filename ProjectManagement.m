@@ -53,11 +53,11 @@ function ProjectManagement_OpeningFcn(hObject, eventdata, handles, varargin)
 % varargin   command line arguments to ProjectManagement (see VARARGIN)
 % clear all;
 
-[DataFolder, name, ext] = fileparts(mfilename('fullpath'));
+[ScriptFolder, name, ext] = fileparts(mfilename('fullpath'));
 
-addpath(genpath(DataFolder));
+addpath(genpath(ScriptFolder));
 
-handles.DataFolder = DataFolder;
+handles.ScriptFolder = ScriptFolder;
 
 if ismac
 
