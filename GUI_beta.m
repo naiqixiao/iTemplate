@@ -67,7 +67,7 @@ set(handles.Button_Reset, 'enable', 'off');
 
 data = varargin{1};
 
-addpath(data.DataFolder);
+addpath(genpath(data.ScriptFolder));
 
 handles.BackgroundImages = data.BackgroundImages;
 handles.AllLandmarks = data.AllLandmarks;
