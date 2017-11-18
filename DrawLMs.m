@@ -680,6 +680,8 @@ function Table_ImageList_CellSelectionCallback(hObject, eventdata, handles)
 
 uiresume(handles.LandMarks)
 
+fixedFaceLocation = handles.fixedFaceLocation;
+
 if ismac
     
     cd(strrep(userpath, ':', ''))

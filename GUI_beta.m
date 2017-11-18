@@ -67,7 +67,7 @@ set(handles.Button_Reset, 'enable', 'off');
 
 data = varargin{1};
 
-addpath(genpath(data.ScriptFolder));
+addpath(data.DataFolder);
 
 handles.BackgroundImages = data.BackgroundImages;
 handles.AllLandmarks = data.AllLandmarks;
@@ -855,31 +855,6 @@ end
 % Save the handles structure.
 guidata(hObject,handles)
 
-
-% --- Executes when selected cell(s) is changed in Table_Fixation.
-function Table_Fixation_CellSelectionCallback(hObject, eventdata, handles)
-% hObject  handle to Table_Fixation (see GCBO)
-% eventdata structure with the following fields (see UITABLE)
-%	Indices: row and column indices of the cell(s) currently selecteds
-% handles  structure with handles and user data (see GUIDATA)
-
-if numel(eventdata.Indices) > 0
-    
-    VarList = get(handles.Table_Fixation, 'Data');
-    
-    row = eventdata.Indices(:, 1);
-    
-    VarList{row, 2} = ~VarList{row, 2};
-    
-    set(handles.Table_Fixation, 'Data', VarList);
-    
-    handles.VarList = VarList;
-    
-    % Save the handles structure.
-    guidata(hObject, handles)
-    
-end
-
 % --- Executes on button press in Button_ModifyReferenceImage.
 function Button_ModifyReferenceImage_Callback(hObject, eventdata, handles)
 % hObject  handle to Button_ModifyReferenceImage (see GCBO)
@@ -1017,11 +992,14 @@ if any([handles.AllLandmarks{:, 3}])
     
     fixedAllLandmarks = fixedAllLandmarks(handles.LMSelected, :);
     
+    newImages = handles.newImages;
+    
     Width = size(fix, 2);
     Height = size(fix, 1);
     
     Tris = handles.Tris;
     
+    TFMatrix = handles.TFMatrix;
     ImageList = handles.AllLandmarks(:, 1);
     
     steps = size(handles.AllLandmarks(cell2mat(handles.AllLandmarks(:, 3)) == true, 1), 1);
@@ -1037,7 +1015,7 @@ if any([handles.AllLandmarks{:, 3}])
             %% Generate transformation matrix for the current face
             AllLandmarksC = handles.AllLandmarks{i, 2};
             
-            TFMatrixC = handles.TFMatrix(i, :, :);
+            TFMatrixC = TFMatrix(i, :, :);
             
             AllLandmarksC = AllLandmarksC(handles.LMSelected, :);
             
