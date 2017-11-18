@@ -22,7 +22,7 @@ function varargout = GUI_beta(varargin)
 
 % Edit the above text to modify the response to help GUI_beta
 
-% Last Modified by GUIDE v2.5 27-Jul-2017 20:39:36
+% Last Modified by GUIDE v2.5 17-Nov-2017 23:07:55
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -67,7 +67,7 @@ set(handles.Button_Reset, 'enable', 'off');
 
 data = varargin{1};
 
-addpath(genpath(data.ScriptFolder));
+addpath(data.DataFolder);
 
 handles.BackgroundImages = data.BackgroundImages;
 handles.AllLandmarks = data.AllLandmarks;
@@ -1011,7 +1011,7 @@ if any([handles.AllLandmarks{:, 3}])
         
         ImageName = ImageList(i);
         
-        if handles.AllLandmarks{i, 3} && ~handles.AllLandmarks{i, 4};
+        if handles.AllLandmarks{i, 3} && ~handles.AllLandmarks{i, 4}
             %% Generate transformation matrix for the current face
             AllLandmarksC = handles.AllLandmarks{i, 2};
             
@@ -2132,3 +2132,18 @@ function PresentationOptions_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+% --------------------------------------------------------------------
+function Table_Fixation_ButtonDownFcn(hObject, eventdata, handles)
+% hObject    handle to Table_Fixation (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes when selected cell(s) is changed in Table_Fixation.
+function Table_Fixation_CellSelectionCallback(hObject, eventdata, handles)
+% hObject    handle to Table_Fixation (see GCBO)
+% eventdata  structure with the following fields (see MATLAB.UI.CONTROL.TABLE)
+%	Indices: row and column indices of the cell(s) currently selecteds
+% handles    structure with handles and user data (see GUIDATA)
