@@ -67,7 +67,7 @@ set(handles.Button_Reset, 'enable', 'off');
 
 data = varargin{1};
 
-addpath(data.DataFolder);
+addpath(data.ScriptFolder);
 
 handles.BackgroundImages = data.BackgroundImages;
 handles.AllLandmarks = data.AllLandmarks;
@@ -171,9 +171,6 @@ if isfield(data, 'FixationData')
 end
 
 set(handles.Table_Stimuli, 'Data', handles.AllLandmarks(:, [1 3 4]));
-
-
-% if handles.DataFolder ~= 0
 
 set(handles.Button_ExportiMap, 'enable', 'off');
 set(handles.Table_Fixation, 'enable', 'off');
