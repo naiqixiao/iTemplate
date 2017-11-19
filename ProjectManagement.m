@@ -69,7 +69,6 @@ elseif ispc
     
 end
 
-
 if isdir('Eye Tracking Projects')
 
     FileList = dir('Eye Tracking Projects/Proj_*');
@@ -216,13 +215,13 @@ addpath(genpath('Eye Tracking Projects'))
 
 rmpath(genpath('Eye Tracking Projects'))
 
-addpath(strcat('Eye Tracking Projects/', handles.CurrentProject))
+addpath(genpath(strcat('Eye Tracking Projects/', handles.CurrentProject)))
 
 FileList = dir(strcat('Eye Tracking Projects/', handles.CurrentProject));
 
 if size([FileList.name], 1) ~= 0
 
-    if exist('BackgroundImages.mat', 'file') == 2;
+    if exist('BackgroundImages.mat', 'file') == 2
 
         load('BackgroundImages.mat')
     
