@@ -1,4 +1,4 @@
-function varargout = ProjectManagement(varargin)
+function varargout = iTemplate(varargin)
 % PROJECTMANAGEMENT MATLAB code for ProjectManagement.fig
 %      PROJECTMANAGEMENT, by itself, creates a new PROJECTMANAGEMENT or raises the existing
 %      singleton*.
