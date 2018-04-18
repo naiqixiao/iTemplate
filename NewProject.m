@@ -237,6 +237,8 @@ if ImageDataFolder ~= 0
     [pathstr, name, ext] = fileparts(mfilename('fullpath'));
     [DataFolder, name, ext] = fileparts(pathstr);
     
+    handles.DataFolder = DataFolder;
+    
     if ~any(exist('Template.png', 'file') == 2 | exist('fixedLandmarks.mat', 'file') == 2 |...
             exist('Tris.mat', 'file') == 2)
         

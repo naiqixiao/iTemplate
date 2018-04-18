@@ -172,15 +172,6 @@ end
 
 set(handles.Table_Stimuli, 'Data', handles.AllLandmarks(:, [1 3 4]));
 
-set(handles.Button_ExportiMap, 'enable', 'off');
-set(handles.Table_Fixation, 'enable', 'off');
-
-set(handles.Table_Stimuli, 'enable', 'on');
-%set(handles.Button_ShowFolder, 'enable', 'on');
-set(handles.Button_NewDraw, 'enable', 'on');
-set(handles.Button_FixationDataProcessing, 'enable', 'on');
-set(handles.PresentationOptions, 'enable', 'off');
-
 %% present the first image to the frames
 handles.CurrentImage = handles.BackgroundImages{1, 2};
 handles.ModifiedImage = handles.newImages{1, 2};
@@ -201,11 +192,45 @@ if handles.AllLandmarks{1, 3}
 end
 
 %%
-set(handles.Button_ModifyReferenceImage, 'enable', 'on');
-set(handles.Button_Transform, 'enable', 'on');
 
-set(handles.Button_AOI, 'enable', 'on');
-set(handles.Button_Reset, 'enable', 'off');
+set(handles.Table_Fixation, 'enable', 'off');
+
+set(handles.Table_Stimuli, 'enable', 'on');
+set(handles.Button_NewDraw, 'enable', 'on');
+set(handles.Button_FixationDataProcessing, 'enable', 'on');
+
+% UI options given certain conditions
+PlacedBefore = any([handles.AllLandmarks{:, 3}]);
+
+if PlacedBefore
+    
+    set(handles.Button_ModifyReferenceImage, 'enable', 'on');
+    set(handles.Button_Transform, 'enable', 'on');
+    set(handles.Button_Reset, 'enable', 'on');
+    
+else
+    
+    set(handles.Button_Reset, 'enable', 'off');
+    set(handles.Button_ModifyReferenceImage, 'enable', 'off');
+    set(handles.Button_Transform, 'enable', 'off');
+
+end
+
+FixationTransformed = isfield(handles.FixationData, 'Xft');
+
+if FixationTransformed
+    
+    set(handles.PresentationOptions, 'enable', 'on');
+    set(handles.Button_AOI, 'enable', 'on');
+    set(handles.Button_ExportiMap, 'enable', 'on');
+    
+else
+    
+    set(handles.PresentationOptions, 'enable', 'off');
+    set(handles.Button_AOI, 'enable', 'off');
+    set(handles.Button_ExportiMap, 'enable', 'off');
+    
+end
 
 % Choose default command line output for GUI_beta
 handles.output = hObject;
@@ -639,12 +664,19 @@ if numel(eventdata.Indices) > 0
         FixationIndex = ismember(FixationData{:, 'Stimuli'}, handles.ImageName);
         
         %% scale fixations
+        if ismember('X', FixationData.Properties.VariableNames)
+            
+            FixationData{:, 'X'} = FixationData{:, 'X'} * handles.scale;
+            FixationData{:, 'Y'} = FixationData{:, 'Y'} * handles.scale;
+            
+        end
         
-        FixationData{:, 'X'} = FixationData{:, 'X'} * handles.scale;
-        FixationData{:, 'Y'} = FixationData{:, 'Y'} * handles.scale;
-        
-        FixationData{:, 'Xtf'} = FixationData{:, 'Xtf'} * handles.scale;
-        FixationData{:, 'Ytf'} = FixationData{:, 'Ytf'} * handles.scale;
+        if ismember('Xtf', FixationData.Properties.VariableNames)
+            
+            FixationData{:, 'Xtf'} = FixationData{:, 'Xtf'} * handles.scale;
+            FixationData{:, 'Ytf'} = FixationData{:, 'Ytf'} * handles.scale;
+            
+        end
         
     end
     
@@ -903,9 +935,7 @@ else
     newImages = handles.newImages;
     
     save(strcat('Eye Tracking Projects/', handles.CurrentProject, '/newImages.mat'), 'newImages');
-    
-    set(handles.Button_ResetReference, 'enable', 'off')
-    
+        
     %% reset Landmark status
     handles.AllLandmarks(1:end, 4) = {false}; % transformed or not
     
@@ -924,8 +954,6 @@ else
     
     imwrite(handles.fix, strcat('Eye Tracking Projects/', handles.CurrentProject, '/Template-new.png'))
     
-    %set(handles.Button_ShowFolder, 'enable', 'on');
-    set(handles.Button_ModifyReferenceImage, 'enable', 'on');
     set(handles.Button_Transform, 'enable', 'on');
     set(handles.Button_NewDraw, 'enable', 'on');
     
@@ -936,7 +964,6 @@ else
     
     
 end
-
 
 % AOI delete
 if exist(strcat('Eye Tracking Projects/', handles.CurrentProject, '/AOI.mat'), 'file')
@@ -1346,11 +1373,19 @@ if isfield(handles, 'FixationData')
         
         FixationData = handles.FixationData;
         
-        FixationData{:, 'X'} = FixationData{:, 'X'} * handles.scale;
-        FixationData{:, 'Y'} = FixationData{:, 'Y'} * handles.scale;
+        if ismember('X', FixationData.Properties.VariableNames)
+            
+            FixationData{:, 'X'} = FixationData{:, 'X'} * handles.scale;
+            FixationData{:, 'Y'} = FixationData{:, 'Y'} * handles.scale;
+            
+        end
         
-        FixationData{:, 'Xtf'} = FixationData{:, 'Xtf'} * handles.scale;
-        FixationData{:, 'Ytf'} = FixationData{:, 'Ytf'} * handles.scale;
+        if ismember('Xtf', FixationData.Properties.VariableNames)
+            
+            FixationData{:, 'Xtf'} = FixationData{:, 'Xtf'} * handles.scale;
+            FixationData{:, 'Ytf'} = FixationData{:, 'Ytf'} * handles.scale;
+            
+        end
         
         % Ellipse AOIs
         for i = 1: size(AOIEllipse, 1)
@@ -1593,9 +1628,7 @@ switch choice
         newImages = handles.newImages;
         
         save(strcat('Eye Tracking Projects/', handles.CurrentProject, '/newImages.mat'), 'newImages');
-        
-        set(handles.Button_ResetReference, 'enable', 'off')
-        
+                
         %% reset Landmark status
         handles.AllLandmarks(1:end, 4) = {false}; % transformed or not
         
@@ -1606,6 +1639,7 @@ switch choice
         set(handles.Table_Stimuli, 'Data', AllLandmarks(:, [1 3 4]));
         
         set(handles.Button_ResetReference, 'enable', 'off')
+        set(handles.Button_ModifyReferenceImage, 'enable', 'on')
         
     case 'No'
         
@@ -1757,80 +1791,77 @@ elseif ispc
     
 end
 
-if all([handles.AllLandmarks{:, 4}])
+% in the future release one might be able to choose .xls or .csv
+% formates
+
+[FixationFile, FixationPath] = uigetfile({'*.xlsx; *.xls; *.csv', 'Excel File (*.xlsx, .xls) or CSV file (*.csv)'}, 'Select the Fixation File');
+
+if FixationFile ~= 0
     
-    % in the future release one might be able to choose .xls or .csv
-    % formates
+    set(handles.Table_Stimuli, 'enable', 'off');
+    set(handles.Table_Fixation, 'enable', 'off');
     
-    [FixationFile, FixationPath] = uigetfile({'*.xlsx; *.xls; *.csv', 'Excel File (*.xlsx, .xls) or CSV file (*.csv)'}, 'Select the Fixation File');
+    set(handles.Button_NewDraw, 'enable', 'off');
+    set(handles.Button_FixationDataProcessing, 'enable', 'off');
+    set(handles.Button_ExportiMap, 'enable', 'off');
     
-    if FixationFile ~= 0
+    set(handles.PresentationOptions, 'enable', 'off');
+    
+    FixationFile = strcat(FixationPath, '/', FixationFile);
+    
+    [pathstr, name, ext] = fileparts(FixationFile);
+    
+    if strcmp(ext, '.xlsx') | strcmp(ext, '.xls')
         
-        set(handles.Table_Stimuli, 'enable', 'off');
-        set(handles.Table_Fixation, 'enable', 'off');
+        [k1 k2 FixationData] = xlsread(FixationFile);
         
-        set(handles.Button_NewDraw, 'enable', 'off');
-        set(handles.Button_FixationDataProcessing, 'enable', 'off');
-        set(handles.Button_ExportiMap, 'enable', 'off');
+        Names = FixationData(1, :);
         
-        set(handles.PresentationOptions, 'enable', 'off');
-        
-        FixationFile = strcat(FixationPath, '/', FixationFile);
-        
-        [pathstr, name, ext] = fileparts(FixationFile);
-        
-        if strcmp(ext, '.xlsx') | strcmp(ext, '.xls')
+        for i = 1: size(Names, 2)
             
-            [k1 k2 FixationData] = xlsread(FixationFile);
-            
-            Names = FixationData(1, :);
-            
-            for i = 1: size(Names, 2)
-                
-                Names{1, i} = strrep(Names{1, i}, ' ', '_');
-                
-            end
-            
-            FixationData(1, :) = [];
-            
-            FixationData = cell2table(FixationData, 'VariableNames', Names);
-            
-        elseif strcmp(ext, '.csv')
-            
-            FixationData = readtable(FixationFile);
-            Names = FixationData.Properties.VariableNames;
-            % FixationData = table2cell(FixationData);
+            Names{1, i} = strrep(Names{1, i}, ' ', '_');
             
         end
         
-        FixationData = sortrows(FixationData, {'Stimuli' 'X' 'Y'},'ascend');
-        handles.FixationData = FixationData;
+        FixationData(1, :) = [];
         
-        save(strcat('Eye Tracking Projects/', handles.CurrentProject, '/FixationData.mat'), 'FixationData')
+        FixationData = cell2table(FixationData, 'VariableNames', Names);
         
-        %% Update the Fixation variable list
+    elseif strcmp(ext, '.csv')
         
-        VarList = handles.FixationData.Properties.VariableNames;
-        
-        VarList = VarList(~ismember(VarList, ['ParticipantName']));
-        VarList = VarList(~ismember(VarList, ['FixationIndex']));
-        VarList = VarList(~ismember(VarList, ['Stimuli']));
-        VarList = VarList(~ismember(VarList, ['X']));
-        VarList = VarList(~ismember(VarList, ['Y']));
-        VarList = VarList(~ismember(VarList, ['Duration']));
-        
-        VarList(2, :) = {false};
-        
-        set(handles.Table_Fixation, 'Data', VarList');
-        
-        msgbox('Fixation has been successfully imported!')
-        
-        
-    else
-        
-        warndlg('Where is the Fixation data?');
+        FixationData = readtable(FixationFile);
+        Names = FixationData.Properties.VariableNames;
+        % FixationData = table2cell(FixationData);
         
     end
+    
+    FixationData = sortrows(FixationData, {'Stimuli' 'X' 'Y'},'ascend');
+    handles.FixationData = FixationData;
+    
+    save(strcat('Eye Tracking Projects/', handles.CurrentProject, '/FixationData.mat'), 'FixationData')
+    
+    %% Update the Fixation variable list
+    
+    VarList = handles.FixationData.Properties.VariableNames;
+    
+    VarList = VarList(~ismember(VarList, ['ParticipantName']));
+    VarList = VarList(~ismember(VarList, ['FixationIndex']));
+    VarList = VarList(~ismember(VarList, ['Stimuli']));
+    VarList = VarList(~ismember(VarList, ['X']));
+    VarList = VarList(~ismember(VarList, ['Y']));
+    VarList = VarList(~ismember(VarList, ['Duration']));
+    VarList = VarList(~ismember(VarList, ['Xtf']));
+    VarList = VarList(~ismember(VarList, ['Ytf']));
+    
+    VarList(2, :) = {false};
+    
+    set(handles.Table_Fixation, 'Data', VarList');
+    
+    msgbox('Fixation has been successfully imported!')
+    
+else
+    
+    warndlg('No Fixation data was imported.');
     
 end
 
@@ -1910,11 +1941,19 @@ if isfield(handles, 'FixationData')
     
     %% scale fixations
     
-    FixationData{:, 'X'} = FixationData{:, 'X'} * handles.scale;
-    FixationData{:, 'Y'} = FixationData{:, 'Y'} * handles.scale;
+    if ismember('X', FixationData.Properties.VariableNames)
+        
+        FixationData{:, 'X'} = FixationData{:, 'X'} * handles.scale;
+        FixationData{:, 'Y'} = FixationData{:, 'Y'} * handles.scale;
+        
+    end
     
-    FixationData{:, 'Xtf'} = FixationData{:, 'Xtf'} * handles.scale;
-    FixationData{:, 'Ytf'} = FixationData{:, 'Ytf'} * handles.scale;
+    if ismember('Xtf', FixationData.Properties.VariableNames)
+        
+        FixationData{:, 'Xtf'} = FixationData{:, 'Xtf'} * handles.scale;
+        FixationData{:, 'Ytf'} = FixationData{:, 'Ytf'} * handles.scale;
+        
+    end
     
 end
 
