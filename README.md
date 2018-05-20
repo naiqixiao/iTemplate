@@ -6,7 +6,7 @@ It requires MATLAB version 2013b and above with Image Processing Toolbox and Sta
 
 Use iTemplate by running iTemplate.m file.
 
-Video demostrations can be found here: https://www.youtube.com/playlist?list=PLtd9KH0CVOtJcDv_PrXCK4xI9a-S2zrZ-
+Video demonstrations can be found here: https://www.youtube.com/playlist?list=PLtd9KH0CVOtJcDv_PrXCK4xI9a-S2zrZ-&disable_polymer=true
 
 Please contact Gabriel (Naiqi) Xiao at nx@princeton.edu, if you have any question. :)
 
