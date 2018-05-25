@@ -216,7 +216,15 @@ else
 
 end
 
-FixationTransformed = isfield(handles.FixationData, 'Xft');
+if isfield(handles, 'FixationData')
+    
+    FixationTransformed = isfield(handles.FixationData, 'Xft');
+    
+else
+    
+    FixationTransformed = 0;
+    
+end
 
 if FixationTransformed
     
