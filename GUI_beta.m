@@ -122,7 +122,7 @@ if ~exist(strcat('Eye Tracking Projects/', handles.CurrentProject, '/Scale.mat')
     
     AllLandmarks = handles.AllLandmarks;
     save(strcat('Eye Tracking Projects/', handles.CurrentProject, '/Landmarks.mat'), 'AllLandmarks');
-
+    
 else
     
     load('Scale.mat');
@@ -213,7 +213,7 @@ else
     set(handles.Button_Reset, 'enable', 'off');
     set(handles.Button_ModifyReferenceImage, 'enable', 'off');
     set(handles.Button_Transform, 'enable', 'off');
-
+    
 end
 
 if isfield(handles, 'FixationData')
@@ -944,7 +944,7 @@ else
     newImages = handles.newImages;
     
     save(strcat('Eye Tracking Projects/', handles.CurrentProject, '/newImages.mat'), 'newImages');
-        
+    
     %% reset Landmark status
     handles.AllLandmarks(1:end, 4) = {false}; % transformed or not
     
@@ -1358,7 +1358,7 @@ if exist(strcat('Eye Tracking Projects/', handles.CurrentProject, '/AOI.mat'), '
     else
         
         set(handles.MainGUI, 'Visible', 'off');
-
+        
         [AOI, AOIEllipse, AOIRect, AOIPoly] = DrawAOI(handles);
         
         set(handles.MainGUI, 'Visible', 'on');
@@ -1368,7 +1368,7 @@ if exist(strcat('Eye Tracking Projects/', handles.CurrentProject, '/AOI.mat'), '
 else
     
     set(handles.MainGUI, 'Visible', 'off');
-
+    
     [AOI, AOIEllipse, AOIRect, AOIPoly] = DrawAOI(handles);
     
     set(handles.MainGUI, 'Visible', 'on');
@@ -1377,24 +1377,24 @@ end
 
 %% Define fixation accroding to AOIsimellipse(gca, mouth);
 if isfield(handles, 'FixationData')
-
+    
     if all(ismember({'Xtf', 'Ytf'}, handles.FixationData.Properties.VariableNames))
         
         FixationData = handles.FixationData;
         
-%         if ismember('X', FixationData.Properties.VariableNames)
-%             
-%             FixationData{:, 'X'} = FixationData{:, 'X'} * handles.scale;
-%             FixationData{:, 'Y'} = FixationData{:, 'Y'} * handles.scale;
-%             
-%         end
-%         
-%         if ismember('Xtf', FixationData.Properties.VariableNames)
-%             
-%             FixationData{:, 'Xtf'} = FixationData{:, 'Xtf'} * handles.scale;
-%             FixationData{:, 'Ytf'} = FixationData{:, 'Ytf'} * handles.scale;
-%             
-%         end
+        %         if ismember('X', FixationData.Properties.VariableNames)
+        %
+        %             FixationData{:, 'X'} = FixationData{:, 'X'} * handles.scale;
+        %             FixationData{:, 'Y'} = FixationData{:, 'Y'} * handles.scale;
+        %
+        %         end
+        
+        if ismember('Xtf', FixationData.Properties.VariableNames)
+            
+            FixationData{:, 'Xtf_AOI'} = FixationData{:, 'Xtf'} * handles.scale;
+            FixationData{:, 'Ytf_AOI'} = FixationData{:, 'Ytf'} * handles.scale;
+            
+        end
         
         % Ellipse AOIs
         for i = 1: size(AOIEllipse, 1)
@@ -1405,7 +1405,7 @@ if isfield(handles, 'FixationData')
                 
             end
             
-            FixationData{:, AOIEllipse{i, 2}} = EllipseAOI(AOIEllipse{i, 1}, FixationData{:, 'Xtf'}, FixationData{:, 'Ytf'});
+            FixationData{:, AOIEllipse{i, 2}} = EllipseAOI(AOIEllipse{i, 1}, FixationData{:, 'Xtf_AOI'}, FixationData{:, 'Ytf_AOI'});
             
         end
         
@@ -1418,7 +1418,7 @@ if isfield(handles, 'FixationData')
                 
             end
             
-            FixationData{:, AOIRect{i, 2}} = RectAOI(AOIRect{i, 1}, FixationData{:, 'Xtf'}, FixationData{:, 'Ytf'});
+            FixationData{:, AOIRect{i, 2}} = RectAOI(AOIRect{i, 1}, FixationData{:, 'Xtf_AOI'}, FixationData{:, 'Ytf_AOI'});
             
         end
         
@@ -1431,9 +1431,12 @@ if isfield(handles, 'FixationData')
                 
             end
             
-            FixationData{:, AOIPoly{i, 2}} = inpolygon(FixationData{:, 'Xtf'}, FixationData{:, 'Ytf'}, AOIPoly{i, 1}(:, 1), AOIPoly{i, 1}(:, 2));
+            FixationData{:, AOIPoly{i, 2}} = inpolygon(FixationData{:, 'Xtf_AOI'}, FixationData{:, 'Ytf_AOI'}, AOIPoly{i, 1}(:, 1), AOIPoly{i, 1}(:, 2));
             
         end
+        
+        FixationData.Xtf_AOI = [];
+        FixationData.Ytf_AOI = [];
         
         %% save data
         
@@ -1637,7 +1640,7 @@ switch choice
         newImages = handles.newImages;
         
         save(strcat('Eye Tracking Projects/', handles.CurrentProject, '/newImages.mat'), 'newImages');
-                
+        
         %% reset Landmark status
         handles.AllLandmarks(1:end, 4) = {false}; % transformed or not
         
@@ -1656,7 +1659,7 @@ switch choice
         
         axes(handles.axes_ImageShowModified);
         imshow(handles.CurrentImage)
-
+        
     case 'No'
         
 end
