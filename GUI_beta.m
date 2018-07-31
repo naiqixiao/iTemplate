@@ -1382,19 +1382,19 @@ if isfield(handles, 'FixationData')
         
         FixationData = handles.FixationData;
         
-        if ismember('X', FixationData.Properties.VariableNames)
-            
-            FixationData{:, 'X'} = FixationData{:, 'X'} * handles.scale;
-            FixationData{:, 'Y'} = FixationData{:, 'Y'} * handles.scale;
-            
-        end
-        
-        if ismember('Xtf', FixationData.Properties.VariableNames)
-            
-            FixationData{:, 'Xtf'} = FixationData{:, 'Xtf'} * handles.scale;
-            FixationData{:, 'Ytf'} = FixationData{:, 'Ytf'} * handles.scale;
-            
-        end
+%         if ismember('X', FixationData.Properties.VariableNames)
+%             
+%             FixationData{:, 'X'} = FixationData{:, 'X'} * handles.scale;
+%             FixationData{:, 'Y'} = FixationData{:, 'Y'} * handles.scale;
+%             
+%         end
+%         
+%         if ismember('Xtf', FixationData.Properties.VariableNames)
+%             
+%             FixationData{:, 'Xtf'} = FixationData{:, 'Xtf'} * handles.scale;
+%             FixationData{:, 'Ytf'} = FixationData{:, 'Ytf'} * handles.scale;
+%             
+%         end
         
         % Ellipse AOIs
         for i = 1: size(AOIEllipse, 1)

@@ -591,7 +591,7 @@ switch Shape
     
     case 'Ellipse'
         
-        AOIC = imellipse(gca, [10 10 100 100]);
+        AOIC = imellipse(gca);
         fcn = makeConstrainToRectFcn('imellipse', get(gca, 'XLim'), get(gca, 'YLim'));
         
     case 'Rectangle'
