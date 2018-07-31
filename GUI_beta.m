@@ -498,6 +498,7 @@ if all([handles.AllLandmarks{:, 4}])
         set(handles.Button_NewDraw, 'enable', 'on');
         set(handles.Button_FixationDataProcessing, 'enable', 'on');
         set(handles.Button_ExportiMap, 'enable', 'on');
+        set(handles.Button_AOI, 'enable', 'on');
         
         set(handles.PresentationOptions, 'enable', 'on');
         
@@ -1649,6 +1650,13 @@ switch choice
         set(handles.Button_ResetReference, 'enable', 'off')
         set(handles.Button_ModifyReferenceImage, 'enable', 'on')
         
+        % reset the presented images
+        set(handles.Button_AOI, 'enable', 'off');
+        set(handles.PresentationOptions, 'enable', 'off');
+        
+        axes(handles.axes_ImageShowModified);
+        imshow(handles.CurrentImage)
+
     case 'No'
         
 end
