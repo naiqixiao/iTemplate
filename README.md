@@ -8,6 +8,6 @@ Use iTemplate by running iTemplate.m file.
 
 Video demonstrations can be found here: https://www.youtube.com/playlist?list=PLtd9KH0CVOtJcDv_PrXCK4xI9a-S2zrZ-&disable_polymer=true
 
-Please contact Gabriel (Naiqi) Xiao at nx@princeton.edu, if you have any question. :)
+Please contact Gabriel (Naiqi) Xiao at xiaon8@mcmaster.ca, if you have any question. :)
 
 Thanks!
