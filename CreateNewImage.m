@@ -41,7 +41,11 @@ function newImage = CreateNewImage(moving, fix, AllLandmarksCT, Tris, TFMatrixC)
     Xtf = reshape(TriIndex.Xtf, h, w);
     Ytf = reshape(TriIndex.Ytf, h, w);
 
-    newImage = griddata(Xtf, Ytf, double(moving(minY:maxY, minX:maxX)), X, Y);
+    for i = 1:size(moving, 3)
+        
+        newImage(:,:,i) = griddata(Xtf, Ytf, double(moving(minY:maxY, minX:maxX, i)), X, Y);
+    
+    end
 
     newImage = uint8(newImage);
 

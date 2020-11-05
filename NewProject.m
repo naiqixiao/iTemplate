@@ -202,13 +202,13 @@ if ImageDataFolder ~= 0
         
         x = imread(ImageName{i});
         
-        info = imfinfo(ImageName{i});
+%         info = imfinfo(ImageName{i});
         
-        if any(info.ColorType ~= 'grayscale')
-            
-            x = rgb2gray(x);
-            
-        end
+%         if any(info.ColorType ~= 'grayscale')
+%             
+%             x = rgb2gray(x);
+%             
+%         end
         
         x = imresize(x, scale);
         
